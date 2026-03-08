@@ -1,0 +1,4 @@
+{:paths ["src"]
+ :tasks
+ {stitch {:doc "Stitch screenshots vertically"
+          :task (apply clojure.main/main "-m" "screensticher.core" *command-line-args*)}}}
