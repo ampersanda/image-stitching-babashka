@@ -147,7 +147,6 @@
                                result))
                            (range)
                            (partition 2 1 image-paths))
-          overlap-pxs (mapv :overlap-pixels overlaps)
           output      (:output options)]
       ;; Check for failed matches
       (doseq [[i ov] (map-indexed vector overlaps)]
@@ -159,7 +158,7 @@
                           ". Images may not be sequential screenshots.")))
           (System/exit 1)))
 
-      (im/stitch-images! image-paths overlap-pxs output)
+      (im/stitch-images! image-paths overlaps output)
 
       (let [out-info (im/identify output)]
         (println (str "Stitched " n " images -> " output
