@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install babashka
+        run: |
+          curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
+          chmod +x install
+          sudo ./install
+
+      - name: Prepare binary
+        run: |
+          bb uberscript screenstitch screenstitch.bb
+          sed -i '1i#!/usr/bin/env bb' screenstitch
+          chmod +x screenstitch
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: screenstitch
+          generate_release_notes: true
